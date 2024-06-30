@@ -119,8 +119,12 @@ async function semiFreshItemStats(ns: KVNamespace, itemID: number): Promise<[Sto
 	const cached = await ns.get(key);
 
 	let fallbackStats: StoryStats | null = null;
+	interface StoredData {
+		stats: StoryStats;
+		ts: number;
+	}
 	if (cached) {
-		const { stats, ts } = JSON.parse(cached);
+		const { stats, ts }: StoredData = JSON.parse(cached);
 		const age = now - ts;
 		const STALE_THRESHOLD = 600; // 10 minutes
 		if (age < STALE_THRESHOLD) {
@@ -147,7 +151,7 @@ async function semiFreshItemStats(ns: KVNamespace, itemID: number): Promise<[Sto
 				JSON.stringify({
 					ts: now,
 					stats,
-				}),
+				} satisfies StoredData),
 				{
 					// caching for max ttl, so that we can use stale data in the event
 					// of not being able to reach the HN api
