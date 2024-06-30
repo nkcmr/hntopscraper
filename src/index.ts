@@ -44,7 +44,7 @@ svc.get('/update', async (c) => {
 	if (timeSinceLastUpdate <= 600) {
 		throw HTTPError.tooManyRequests('last updated quite recently, refusing to update');
 	}
-	await updateTopStores(c.env);
+	c.event.waitUntil(updateTopStores(c.env));
 	return c.json({ ok: true });
 });
 
