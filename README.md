@@ -1,5 +1,7 @@
 ## hntopscraper
 
+![HN Tidbyt Story Fetcher](https://healthchecks.io/b/2/45a155d0-3159-465a-92fb-a4f08941b556.svg)
+
 This little API powers a [Tidbyt](https://tidbyt.com/) app for seeing top stories
 on [Hacker News](https://news.ycombinator.com/news).
 
