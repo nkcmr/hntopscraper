@@ -3,6 +3,7 @@ import { z } from 'zod';
 import { MAX_DATA_TTL } from './constants';
 import { Env, HonoEnv, currentTime } from './env';
 import { HTTPError } from './error';
+import { reportHealthcheck } from './hc';
 import { Story, currentTopStories, getStory, setCurrentTopStories, setStory } from './kv';
 
 const svc = new Hono<HonoEnv>({});
@@ -44,13 +45,15 @@ svc.get('/update', async (c) => {
 	if (timeSinceLastUpdate <= 600) {
 		throw HTTPError.tooManyRequests('last updated quite recently, refusing to update');
 	}
-	c.event.waitUntil(updateTopStores(c.env));
+	// c.event.waitUntil();
+	await updateTopStores(c.env);
 	return c.json({ ok: true });
 });
 
 svc.onError(async (err, c) => {
 	console.log(`onError:triggered`, {
 		error: err,
+		error_string: `${err}`,
 	});
 	if (err instanceof HTTPError) {
 		return c.json(
@@ -212,6 +215,8 @@ async function updateTopStores(env: Env): Promise<void> {
 export default {
 	fetch: svc.fetch,
 	async scheduled(event: ScheduledEvent, env: Env, ctx: ExecutionContext) {
-		await updateTopStores(env);
+		await reportHealthcheck(ctx, env.HEALTHCHECK_IO_ID, async () => {
+			await updateTopStores(env);
+		});
 	},
 };

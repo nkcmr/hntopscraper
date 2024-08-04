@@ -1,5 +1,6 @@
 export interface Env {
 	STATE: KVNamespace;
+	HEALTHCHECK_IO_ID: string;
 	[x: string]: unknown;
 }
 
