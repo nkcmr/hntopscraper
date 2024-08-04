@@ -215,7 +215,7 @@ async function updateTopStores(env: Env): Promise<void> {
 export default {
 	fetch: svc.fetch,
 	async scheduled(event: ScheduledEvent, env: Env, ctx: ExecutionContext) {
-		await reportHealthcheck(ctx, env.HEALTHCHECK_IO_ID, async () => {
+		await reportHealthcheck(env, ctx, env.HEALTHCHECK_IO_ID, async () => {
 			await updateTopStores(env);
 		});
 	},

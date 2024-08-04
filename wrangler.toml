@@ -12,3 +12,6 @@ crons = ["0 * * * *"]
 [[kv_namespaces]]
 binding = "STATE"
 id = "e18b4a544a094ab4bb46ad2702d0b9f3"
+
+[version_metadata]
+binding = "CF_VERSION_METADATA"

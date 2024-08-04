@@ -1,6 +1,7 @@
 export interface Env {
 	STATE: KVNamespace;
 	HEALTHCHECK_IO_ID: string;
+	CF_VERSION_METADATA: WorkerVersionMetadata;
 	[x: string]: unknown;
 }
 
